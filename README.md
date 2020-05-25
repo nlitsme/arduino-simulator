@@ -36,6 +36,21 @@ When either KLM or XYZ has .cpp files which need to be linked to your project, y
 to extend the `Makefile`, like i did with the `arduino-fat` library.
 
 
+Example
+=======
+
+    make fastleddemo
+    ./fastleddemo
+
+
+Configuration
+=============
+
+Adding `CFLAGS=-DVERBOSE` will add output for `delay` and `loop`. Add this as an environment variable before callling make, like this:
+
+    CFLAGS=-DVERBOSE make MyProject
+
+
 AUTHOR
 ======
 
