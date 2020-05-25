@@ -97,7 +97,9 @@ struct String {
 namespace {
 void delay(int n)
 {
+#ifdef VERBOSE
     printf("delay(%d)\n", n);
+#endif
     usleep(n*1000);
 }
 
@@ -108,7 +110,9 @@ void yield()
 
 void delayMicroseconds(int n)
 {
+#ifdef VERBOSE
     printf("udelay(%d)\n", n);
+#endif
     usleep(1000);
 }
 int random(int min, int max)

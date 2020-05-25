@@ -6,7 +6,9 @@ int main(int, char**)
     printf("setup\n");
     setup();
     while(true) {
+#ifdef VERBOSE
         printf("loop\n");
+#endif
         loop();
     }
 }
