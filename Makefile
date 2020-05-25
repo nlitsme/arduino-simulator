@@ -9,7 +9,7 @@ AVRDIR=$(ARDUINOAPP)/Contents/Java/hardware/arduino/avr
 SYSLIBS+=SPI
 USEDLIBS+=SdFat
 
-CFLAGS=-O0 -g -std=c++17
+CFLAGS+=-O0 -g -std=c++17
 CFLAGS+=-I .
 CFLAGS+=$(foreach i,$(SYSLIBS),-I $(AVRDIR)/libraries/$i/src)
 CFLAGS+=$(foreach i,$(USEDLIBS),-I $(ARDUINODIR)/libraries/$i/src)
@@ -26,8 +26,12 @@ libarduino-simulator.a:  arduino.o arduino-spi.o $(if $(USEFATLIB),libarduino-fa
 
 %: %.o  libarduino-simulator.a
 	$(CXX) -o $@ $(filter-out %.a,$^)  $(LDFLAGS) -L. -larduino-simulator
+
 %.o: $(ARDUINODIR)/%
 	$(CXX) -c $(CFLAGS) -x c++ $^/$(notdir $^).ino  -o $@
+%.o: examples/%
+	$(CXX) -c $(CFLAGS) -x c++ $^/$(notdir $^).ino  -o $@
+
 
 %.o: %.cpp
 	$(CXX) -c $(CFLAGS) $^  -o $@
