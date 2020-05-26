@@ -1,20 +1,26 @@
+#
+# This builds the arduino project name specified as the make target
+# using the arduino simulator framework.
+#
 -include Makefile.local
 
 # These paths are specific to MacOS, you may need to change them
 # to something else to make this work under linux or windows
-ARDUINODIR=$(HOME)/Documents/Arduino/
+PROJECTSDIR=$(HOME)/Documents/Arduino/
 ARDUINOAPP=$(firstword $(wildcard $(HOME)/Applications/Arduino.app /Applications/Arduino.app))
-AVRDIR=$(ARDUINOAPP)/Contents/Java/hardware/arduino/avr
+HARDWAREDIR=$(ARDUINOAPP)/Contents/Java/hardware
+AVRTOOLS=$(HARDWAREDIR)/tools/avr
+AVRBASE=$(HARDWAREDIR)/arduino/avr
 
 SYSLIBS+=SPI
 USEDLIBS+=SdFat
 
 CFLAGS+=-O0 -g -std=c++17
 CFLAGS+=-I .
-CFLAGS+=$(foreach i,$(SYSLIBS),-I $(AVRDIR)/libraries/$i/src)
-CFLAGS+=$(foreach i,$(USEDLIBS),-I $(ARDUINODIR)/libraries/$i/src)
+CFLAGS+=$(foreach i,$(SYSLIBS),-I $(AVRBASE)/libraries/$i/src)
+CFLAGS+=$(foreach i,$(USEDLIBS),-I $(PROJECTSDIR)/libraries/$i/src)
 CFLAGS+=-include Arduino.h
-CFLAGS+=-DARDUINO
+CFLAGS+=-DARDUINO=10607
 
 LIBTOOL=libtool
 
@@ -27,7 +33,7 @@ libarduino-simulator.a:  arduino.o arduino-spi.o $(if $(USEFATLIB),libarduino-fa
 %: %.o  libarduino-simulator.a
 	$(CXX) -o $@ $(filter-out %.a,$^)  $(LDFLAGS) -L. -larduino-simulator
 
-%.o: $(ARDUINODIR)/%
+%.o: $(PROJECTSDIR)/%
 	$(CXX) -c $(CFLAGS) -x c++ $^/$(notdir $^).ino  -o $@
 %.o: examples/%
 	$(CXX) -c $(CFLAGS) -x c++ $^/$(notdir $^).ino  -o $@
@@ -37,7 +43,7 @@ libarduino-simulator.a:  arduino.o arduino-spi.o $(if $(USEFATLIB),libarduino-fa
 	$(CXX) -c $(CFLAGS) $^  -o $@
 
 
-FATDIR=$(ARDUINODIR)/libraries/SdFat/src
+FATDIR=$(PROJECTSDIR)/libraries/SdFat/src
 libarduino-fatlib.a: FatFile.o FatVolume.o SdSpiCard.o FatFileSFN.o FatFileLFN.o
 	$(LIBTOOL) -o $@ $^
 
