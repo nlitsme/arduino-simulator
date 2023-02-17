@@ -91,6 +91,8 @@ struct Stream : Print {
 struct SerialClass : Stream {
 };
 struct String {
+    String operator=(const String& s) { return *this; }
+    String operator=(const char* s) { return *this; }
     const char *c_str() const { return "x"; }
 };
 
@@ -149,6 +151,11 @@ void digitalWrite(int pin, int value)
 {
     printf("pin %d := %d\n", pin, value);
 }
+uint16_t analogRead(int pin)
+{
+    return 234;
+}
+
 #define LOW 0
 #define HIGH 1
 
@@ -172,3 +179,15 @@ SerialClass Serial;
 
 #define ISR(fn) void fn()
 #define _BV(bit) (1 << (bit))
+
+
+uint8_t sin8(uint8_t x)
+{
+    // todo
+    return x;
+}
+uint8_t scale8(uint8_t x, uint8_t y)
+{
+    // todo
+    return x;
+}

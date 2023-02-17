@@ -1,6 +1,8 @@
 #pragma once
 #include <vector>
 #include <map>
+#include <stdio.h>
+#include <stdexcept>
 
 struct simulated {
     struct item {
@@ -853,3 +855,23 @@ struct simulated {
 
 
 
+enum {
+    GPIO_NUM_32,
+    GPIO_NUM_36,
+    GPIO_NUM_26,
+    GPIO_NUM_13,
+    GPIO_NUM_19,
+    GPIO_NUM_12,
+    GPIO_NUM_14,
+    GPIO_NUM_27,
+    GPIO_NUM_25,
+    GPIO_NUM_33,
+    GPIO_NUM_34,
+    GPIO_NUM_2,
+    GPIO_NUM_4,
+    GPIO_NUM_15,
+    GPIO_NUM_16,
+    GPIO_NUM_35,
+};
+
+enum { INPUT_PULLDOWN };
